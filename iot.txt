@@ -1,0 +1,233 @@
+6)
+pitches.h
+#define NOTE_G3  196
+#define NOTE_C4  262
+#define NOTE_A3  220
+#define NOTE_B3  247
+
+#include "pitches.h"
+
+int melody[] = {
+  NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4
+};
+
+int noteDurations[] = {
+  4, 8, 8, 4, 4, 4, 4, 4
+};
+
+void setup() {
+  for (int thisNote = 0; thisNote < 8; thisNote++) {
+    int noteDuration = 1000 / noteDurations[thisNote];
+    tone(8, melody[thisNote], noteDuration);
+    int pauseBetweenNotes = noteDuration * 1.30;
+    delay(pauseBetweenNotes);
+    noTone(8);
+  }
+}
+
+void loop() {
+  
+}
+====================================================
+10)
+
+#include "DHT.h"
+#define DHTPIN 2     // Digital pin connected to the DHT sensor
+#define DHTTYPE DHT11   // DHT 22  (AM2302), AM2321
+
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println(F("DHTxx test!"));
+  dht.begin();
+
+  int t_sum = readandcaltemperature();
+  Serial.print(F("Sum of the Three temperature is: "));
+  Serial.println(t_sum);
+  if(t_sum%2==0)
+  {
+    Serial.println("sum is even");
+  }else{
+     Serial.println("sum is odd");
+  }
+
+  float h_avg = readandcalhumidity();
+     Serial.print(F("Average of humidity is: "));
+      Serial.println(h_avg);
+}
+
+int readandcaltemperature()
+{
+  int sum=0;
+  Serial.print(("Temperature: "));
+ 
+  for(int i=0;i<3;i++)
+  {
+     float t = dht.readTemperature();
+        // Check if any reads failed and exit early (to try again).
+      if (isnan(t)) {
+        Serial.println(F("Failed to read from DHT sensor!"));
+        return;
+      }
+     Serial.println(t);
+    
+     sum+=t;
+      delay(1000);
+  }
+  return sum;
+}
+
+
+float readandcalhumidity()
+{
+  float sum=0;
+  Serial.println(F("Humidity: "));
+  for(int i=0;i<10;i++)
+  {
+     float h = dht.readHumidity();
+     // Check if any reads failed and exit early (to try again).
+          if (isnan(h)) {
+            Serial.println(F("Failed to read from DHT sensor!"));
+            return;
+          }
+      Serial.println(h);
+     sum+=h;
+      delay(1000);
+  }
+  return (sum/10);
+}
+
+void loop() {
+  
+}
+======================================================
+11)
+
+#include "DHT.h"
+#define DHTPIN 2     // Digital pin connected to the DHT sensor
+#define DHTTYPE DHT11   // DHT 22  (AM2302), AM2321
+
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println(F("DHTxx test!"));
+  dht.begin();
+
+  int n= readandcaltemperature();
+  Serial.print(F("Average is : "));
+  Serial.println(n);
+  fibonacci(n);
+}
+
+int readandcaltemperature()
+{
+  int sum=0;
+  for(int i=0;i<5;i++)
+  {
+     float t = dht.readTemperature();
+        // Check if any reads failed and exit early (to try again).
+      if ( isnan(t)) {
+        Serial.println(F("Failed to read from DHT sensor!"));
+        return;
+      }
+      Serial.print(("Temperature: "));
+      Serial.println(t);
+      sum+=t;
+      delay(1000);
+  }
+  return (sum/5); 
+}
+
+
+  
+  void fibonacci(int limit) {
+    int a = 0, b = 1, next;
+    Serial.print(a);
+    Serial.print(" ");
+    Serial.print(b);
+     Serial.print(" ");
+
+    while (1) {
+        next = a + b;
+        if (next > limit)
+            break;
+         Serial.print(next);
+         Serial.print(" ");
+        a = b;
+        b = next;
+    }
+     Serial.println(" ");
+}
+
+void loop() {
+   
+}
+=======================================
+15)
+
+const int tpin = 9;
+const int epin = 10;
+float duration,distance;
+int n,r,sum=0,temp;
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(tpin,OUTPUT);
+  pinMode(epin,INPUT);
+  Serial.begin(9600);
+
+  int t_sum = ult();
+  Serial.print(F("Sum of the Three Distance is: "));
+  Serial.println(t_sum);
+  Serial.print(F("Average:- "));
+  Serial.println(t_sum/3);
+
+  while(t_sum>0)    
+  {    
+    r=t_sum%10;    
+    sum=sum+(r*r*r);    
+    t_sum=t_sum/10;    
+  }    
+  if(temp==sum)
+  {
+    Serial.print("armstrong  number "); 
+  }      
+  else 
+  {
+    Serial.print("not armstrong number");  
+  }   
+  return 0; 
+  }
+
+int ult()
+{
+  int sum=0;
+  Serial.print(("Distance: "));
+ 
+  for(int i=0;i<3;i++)
+  {
+    digitalWrite(tpin,LOW);
+    delayMicroseconds(2);
+    digitalWrite(tpin,HIGH);
+    delayMicroseconds(10);
+    digitalWrite(tpin,LOW);
+
+    duration = pulseIn(epin,HIGH);
+    distance = (duration * .0343) / 2;
+    Serial.print("Distance:- ");
+    Serial.println(distance);
+    delay(100);
+
+    sum+=distance;
+    delay(1000);
+  }
+  return sum;
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  
+}
+
+  
